@@ -30,7 +30,7 @@ FROM base AS builder
 WORKDIR $APP_PATH
 COPY . .
 COPY --from=base /app/node_modules ./node_modules
-RUN ls ./node_modules
+RUN pnpm i --frozen-lockfile;
 RUN pnpm build
 
 # Production image, copy all the files and run next
