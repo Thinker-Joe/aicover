@@ -28,7 +28,7 @@ FROM base AS builder
 WORKDIR /app
 COPY . .
 COPY --from=base /app/node_modules ./node_modules
-RUN pnpm build
+RUN npm build
 
 # Production image, copy all the files and run next
 FROM base AS runner
