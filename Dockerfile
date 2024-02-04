@@ -23,12 +23,14 @@ RUN yarn global add pnpm && pnpm i --frozen-lockfile;
 #   elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
 #   else echo "Lockfile not found." && exit 1; \
 #   fi
+RUN ls /app/node_modules
 
 # Rebuild the source code only when needed
 FROM base AS builder
-WORKDIR /app
+WORKDIR $APP_PATH
 COPY . .
 COPY --from=base /app/node_modules ./node_modules
+RUN ls ./node_modules
 RUN pnpm build
 
 # Production image, copy all the files and run next
