@@ -7,7 +7,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 
-RUN npm config set registry https://registry.npm.taobao.org/
+RUN npm config set registry https://registry.npmmirror.com/
 
 ENV NODE_ENV=production \
   APP_PATH=/app
