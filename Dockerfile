@@ -15,7 +15,8 @@ ENV NODE_ENV=production \
 WORKDIR $APP_PATH
 
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+# COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY . .
 RUN yarn global add pnpm && pnpm i;
 # RUN yarn global add pnpm && pnpm i --frozen-lockfile;
 # RUN \
@@ -25,13 +26,15 @@ RUN yarn global add pnpm && pnpm i;
 #   else echo "Lockfile not found." && exit 1; \
 #   fi
 RUN ls /app/node_modules
-
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR $APP_PATH
-COPY . .
-COPY --from=base /app/node_modules ./node_modules
 RUN pnpm build
+
+
+# # Rebuild the source code only when needed
+# FROM base AS builder
+# WORKDIR $APP_PATH
+# COPY . .
+# COPY --from=base /app/node_modules ./node_modules
+# RUN pnpm build
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -42,12 +45,12 @@ ENV NODE_ENV production
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
-# You only need to copy next.config.js if you are NOT using the default configuration
-# COPY --from=builder /app/next.config.js ./
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
+# # You only need to copy next.config.js if you are NOT using the default configuration
+# # COPY --from=builder /app/next.config.js ./
+# COPY --from=builder /app/public ./public
+# COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+# COPY --from=builder /app/node_modules ./node_modules
+# COPY --from=builder /app/package.json ./package.json
 
 USER nextjs
 

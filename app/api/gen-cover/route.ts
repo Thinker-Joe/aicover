@@ -49,14 +49,14 @@ export async function POST(req: Request) {
     if (!raw_img_url) {
       return respErr("generate cover failed");
     }
-
-    const img_name = encodeURIComponent(description);
-    const s3_img = await downloadAndUploadImage(
-      raw_img_url,
-      process.env.AWS_BUCKET || "trysai",
-      `covers/${img_name}.png`
-    );
-    const img_url = s3_img.Location;
+    console.log("raw_img_url: ", raw_img_url);
+    // const img_name = encodeURIComponent(description);
+    // const s3_img = await downloadAndUploadImage(
+    //   raw_img_url,
+    //   process.env.AWS_BUCKET || "trysai",
+    //   `covers/${img_name}.png`
+    // );
+    const img_url = raw_img_url;
 
     const cover: Cover = {
       user_email: user_email,
